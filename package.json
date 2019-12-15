@@ -1,0 +1,17 @@
+{
+  "name": "tailwindcss-glow",
+  "version": "0.2.21",
+  "description": "TailwindCSS glow plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: No tests rn :(. \" && exit 1"
+  },
+  "author": "Wickramaranga Abeygunawardhana <w@umstek.tk>",
+  "license": "MIT",
+  "dependencies": {
+    "color-convert": "^2.0.1",
+    "color-string": "^1.5.3",
+    "lodash": "^4.17.15",
+    "tailwindcss": "^1.1.4"
+  }
+}
