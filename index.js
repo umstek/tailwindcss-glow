@@ -21,37 +21,79 @@ const defaultStyles = {
   none: "none"
 };
 
-const dynamicShadowLg = {
+const dynamicGlowBase = {
   position: "relative",
   zIndex: 1,
   "&::after": {
     content: "''",
-    width: "98%",
-    height: "98%",
     position: "absolute",
     background: "inherit",
-    top: "calc(4px + 2%)",
-    left: "1%",
-    filter: "blur(8px)",
-    opacity: 0.7,
     zIndex: -1
   }
 };
 
-const dynamicShadowXl = {
-  position: "relative",
-  zIndex: 1,
+const dynamicGlow = {
+  ...dynamicGlowBase,
   "&::after": {
-    content: "''",
+    ...dynamicGlowBase["&::after"],
+    width: "99%",
+    height: "98%",
+    top: "2px",
+    left: "0.4%",
+    filter: "blur(2px)",
+    opacity: 1
+  }
+};
+
+const dynamicGlowMd = {
+  ...dynamicGlowBase,
+  "&::after": {
+    ...dynamicGlowBase["&::after"],
+    width: "99%",
+    height: "98%",
+    top: "4px",
+    left: "0.5%",
+    filter: "blur(3px)",
+    opacity: 0.7
+  }
+};
+
+const dynamicGlowLg = {
+  ...dynamicGlowBase,
+  "&::after": {
+    ...dynamicGlowBase["&::after"],
+    width: "98%",
+    height: "98%",
+    top: "calc(4px + 2%)",
+    left: "1%",
+    filter: "blur(8px)",
+    opacity: 0.7
+  }
+};
+
+const dynamicGlowXl = {
+  ...dynamicGlowBase,
+  "&::after": {
+    ...dynamicGlowBase["&::after"],
     width: "98%",
     height: "96%",
-    position: "absolute",
-    background: "inherit",
     top: "calc(12px + 4%)",
     left: "1%",
     filter: "blur(12px)",
-    opacity: 0.53,
-    zIndex: -1
+    opacity: 0.53
+  }
+};
+
+const dynamicGlow2Xl = {
+  ...dynamicGlowBase,
+  "&::after": {
+    ...dynamicGlowBase["&::after"],
+    width: "94%",
+    height: "94%",
+    top: "calc(20px + 4%)",
+    left: "3%",
+    filter: "blur(22px)",
+    opacity: 0.84
   }
 };
 
@@ -77,12 +119,14 @@ module.exports = function() {
       const baseColor = colorRGB.join(", ");
 
       return _.map(styleFunctions, ([modifier, style]) => {
-        const className =
-          modifier === "default"
-            ? "glow"
-            : `${e(
-                prefixNegativeModifiers("glow", `${colorModifier}-${modifier}`)
-              )}`;
+        const className = `${e(
+          prefixNegativeModifiers(
+            "glow",
+            modifier === "default"
+              ? colorModifier // default style will have only a color suffix
+              : `${colorModifier}-${modifier}`
+          )
+        )}`;
 
         return [
           `.${className}`,
@@ -111,8 +155,11 @@ module.exports = function() {
 
     addUtilities(utilities, variants("shadow"));
     addUtilities([
-      { ".glow-dynamic-lg": dynamicShadowLg },
-      { ".glow-dynamic-xl": dynamicShadowXl }
+      { ".glow-dynamic": dynamicGlow },
+      { ".glow-dynamic-md": dynamicGlowMd },
+      { ".glow-dynamic-lg": dynamicGlowLg },
+      { ".glow-dynamic-xl": dynamicGlowXl },
+      { ".glow-dynamic-2xl": dynamicGlow2Xl }
     ]);
   };
 };
