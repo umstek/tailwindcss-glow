@@ -18,6 +18,7 @@
   "author": "Wickramaranga Abeygunawardhana <w@umstek.tk>",
   "main": "index.js",
   "scripts": {
+    "ci-gpr": "node scripts/prepare-gpr.js",
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
   "dependencies": {
