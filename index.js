@@ -137,7 +137,7 @@ module.exports = function() {
       });
     });
 
-    const staticGlows = _.map(staticStyles, (style, modifier) => {
+    const staticGlows = _.map(staticStyles, ([modifier, style]) => {
       const className =
         modifier === "default"
           ? "glow"
