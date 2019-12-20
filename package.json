@@ -1,13 +1,25 @@
 {
   "name": "tailwindcss-glow",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "description": "TailwindCSS glow plugin",
+  "keywords": [
+    "tailwindcss-plugin",
+    "tailwindcss",
+    "glow",
+    "shadow"
+  ],
+  "homepage": "https://github.com/umstek/tailwindcss-glow",
+  "bugs": {
+    "url": "https://github.com/umstek/tailwindcss-glow/issues",
+    "email": "w@umstek.tk"
+  },
+  "repository": "https://github.com/umstek/tailwindcss-glow.git",
+  "license": "MIT",
+  "author": "Wickramaranga Abeygunawardhana <w@umstek.tk>",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
-  "author": "Wickramaranga Abeygunawardhana <w@umstek.tk>",
-  "license": "MIT",
   "dependencies": {
     "color-convert": "^2.0.1",
     "color-string": "^1.5.3",
