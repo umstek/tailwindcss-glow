@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-glow",
-  "version": "0.2.52",
+  "version": "0.3.5",
   "description": "TailwindCSS glow plugin",
   "main": "index.js",
   "scripts": {
