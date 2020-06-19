@@ -25,6 +25,6 @@
     "color-convert": "^2.0.1",
     "color-string": "^1.5.3",
     "lodash": "^4.17.15",
-    "tailwindcss": "^1.1.4"
+    "tailwindcss": "^1.4.6"
   }
 }
