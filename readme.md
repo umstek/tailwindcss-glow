@@ -1,5 +1,7 @@
 # Colored/Dynamic Shadow/Glow Plugin for TailwindCSS
 
+*NOTE*: This plugin is for Tailwind 1.x; 2.x. plugin is being developed. 
+
 The default shadow plugin for TailwindCSS doesn't support colored shadows, which is a trend now. Also, the default
 outline shadow is a light blue -- which doesn't match when colors other than blue are used for the background color
 of the element to which the shadow is applied. This can be customized, of course, but it is still overwhelming to get colored shadows for, e.g.: 10 colors.  

@@ -8,17 +8,17 @@ const flattenColorPalette = require("tailwindcss/lib/util/flattenColorPalette")
   .default;
 
 const defaultStyles = {
-  default: baseColor =>
+  default: (baseColor) =>
     `0 1px 3px 0 rgba(${baseColor}, 0.4), 0 1px 2px 0 rgba(${baseColor}, 0.24)`,
-  md: baseColor =>
+  md: (baseColor) =>
     `0 4px 6px -1px rgba(${baseColor}, 0.4), 0 2px 4px -1px rgba(${baseColor}, 0.24)`,
-  lg: baseColor =>
+  lg: (baseColor) =>
     `0 10px 15px -3px rgba(${baseColor}, 0.4), 0 4px 6px -2px rgba(${baseColor}, 0.20)`,
-  xl: baseColor =>
+  xl: (baseColor) =>
     `0 20px 25px -5px rgba(${baseColor}, 0.4), 0 10px 10px -5px rgba(${baseColor}, 0.16)`,
-  "2xl": baseColor => `0 25px 50px -12px rgba(${baseColor}, 1)`,
-  outline: baseColor => `0 0 0 3px rgba(${baseColor}, 0.5)`,
-  none: "none"
+  "2xl": (baseColor) => `0 25px 50px -12px rgba(${baseColor}, 1)`,
+  outline: (baseColor) => `0 0 0 3px rgba(${baseColor}, 0.5)`,
+  none: "none",
 };
 
 const dynamicGlowBase = {
@@ -28,8 +28,8 @@ const dynamicGlowBase = {
     content: "''",
     position: "absolute",
     background: "inherit",
-    zIndex: -1
-  }
+    zIndex: -1,
+  },
 };
 
 const dynamicGlow = {
@@ -41,8 +41,8 @@ const dynamicGlow = {
     top: "2px",
     left: "0.4%",
     filter: "blur(2px)",
-    opacity: 1
-  }
+    opacity: 1,
+  },
 };
 
 const dynamicGlowMd = {
@@ -54,8 +54,8 @@ const dynamicGlowMd = {
     top: "4px",
     left: "0.5%",
     filter: "blur(3px)",
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 };
 
 const dynamicGlowLg = {
@@ -67,8 +67,8 @@ const dynamicGlowLg = {
     top: "calc(4px + 2%)",
     left: "1%",
     filter: "blur(8px)",
-    opacity: 0.7
-  }
+    opacity: 0.7,
+  },
 };
 
 const dynamicGlowXl = {
@@ -80,8 +80,8 @@ const dynamicGlowXl = {
     top: "calc(12px + 4%)",
     left: "1%",
     filter: "blur(12px)",
-    opacity: 0.53
-  }
+    opacity: 0.53,
+  },
 };
 
 const dynamicGlow2Xl = {
@@ -93,12 +93,12 @@ const dynamicGlow2Xl = {
     top: "calc(20px + 4%)",
     left: "3%",
     filter: "blur(22px)",
-    opacity: 0.84
-  }
+    opacity: 0.84,
+  },
 };
 
-module.exports = function() {
-  return function({ addUtilities, e, theme, variants }) {
+module.exports = function () {
+  return function ({ addUtilities, e, theme, variants }) {
     const colors = flattenColorPalette(theme("glow.colors") || theme("colors"));
     const styles = theme("glow.styles") || defaultStyles;
     const styleFunctions = _.filter(
@@ -111,6 +111,10 @@ module.exports = function() {
     );
 
     const processedGlows = _.flatMap(colors, (colorValue, colorModifier) => {
+      if (colorValue === "currentColor") {
+        return null;
+      }
+
       const colorDescriptor = colorString.get(colorValue);
       const colorRGB = (colorDescriptor.model === "rgb"
         ? colorDescriptor.value
@@ -131,11 +135,11 @@ module.exports = function() {
         return [
           `.${className}`,
           {
-            "box-shadow": style(baseColor)
-          }
+            "box-shadow": style(baseColor),
+          },
         ];
       });
-    });
+    }).filter((c) => !!c);
 
     const staticGlows = _.map(staticStyles, ([modifier, style]) => {
       const className =
@@ -146,8 +150,8 @@ module.exports = function() {
       return [
         `.${className}`,
         {
-          "box-shadow": style
-        }
+          "box-shadow": style,
+        },
       ];
     });
 
@@ -159,7 +163,7 @@ module.exports = function() {
       { ".glow-dynamic-md": dynamicGlowMd },
       { ".glow-dynamic-lg": dynamicGlowLg },
       { ".glow-dynamic-xl": dynamicGlowXl },
-      { ".glow-dynamic-2xl": dynamicGlow2Xl }
+      { ".glow-dynamic-2xl": dynamicGlow2Xl },
     ]);
   };
 };
