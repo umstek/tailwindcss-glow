@@ -111,6 +111,10 @@ module.exports = function () {
     );
 
     const processedGlows = _.flatMap(colors, (colorValue, colorModifier) => {
+      if (colorValue === "currentColor") {
+        return null;
+      }
+
       const colorDescriptor = colorString.get(colorValue);
       const colorRGB = (colorDescriptor.model === "rgb"
         ? colorDescriptor.value
@@ -135,7 +139,7 @@ module.exports = function () {
           },
         ];
       });
-    });
+    }).filter((c) => !!c);
 
     const staticGlows = _.map(staticStyles, ([modifier, style]) => {
       const className =
