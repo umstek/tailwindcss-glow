@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-glow",
-  "version": "0.3.10",
+  "version": "2.0.0-alpha.1",
   "description": "TailwindCSS glow plugin",
   "keywords": [
     "tailwindcss-plugin",
@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "color-convert": "^2.0.1",
-    "color-string": "^1.5.4",
-    "lodash": "^4.17.20",
-    "tailwindcss": "^1.9.6"
+    "color-string": "^1.5.5",
+    "lodash": "^4.17.21",
+    "tailwindcss": "^2.0.4"
   }
 }

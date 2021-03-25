@@ -19,13 +19,7 @@ function App() {
           glow-dynamic-md
         </div>
       </div>
-      <div
-        className="my-16 glow-dynamic-md"
-        style={{
-          backgroundColor: `#00DBDE`,
-          backgroundImage: `linear-gradient(90deg, #00DBDE 0%, #FC00FF 100%)`,
-        }}
-      >
+      <div className="my-16 glow-dynamic-md bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
         <p>glow-dynamic-md with gradient</p>
       </div>
     </div>

@@ -1,14 +1,16 @@
 # Colored/Dynamic Shadow/Glow Plugin for TailwindCSS
 
-*NOTE*: This plugin is for Tailwind 1.x; 2.x. plugin is being developed. 
+_NOTE_: This plugin is for Tailwind 2.x and unstable; 1.x plugin is at v0.3.10.
+https://github.com/umstek/tailwindcss-glow/releases/tag/v0.3.10
 
-The default shadow plugin for TailwindCSS doesn't support colored shadows, which is a trend now. Also, the default
-outline shadow is a light blue -- which doesn't match when colors other than blue are used for the background color
-of the element to which the shadow is applied. This can be customized, of course, but it is still overwhelming to get colored shadows for, e.g.: 10 colors.  
+The default shadow plugin for TailwindCSS doesn't support colored shadows, which is a trend now.
+This can be customized, of course, but it is still overwhelming to get colored shadows for, e.g.: 10 colors.  
 WARNING: **This generates a lot of styles, so it is recommended that you choose only the colors that are necessary,
-and/or use `purgecss`.**
+and/or enable purging.**
 
 ## Installation
+
+CAREFUL: We DON'T use semantic versioning. 0.x versions are for tailwindcss 1.x and the new versions will maintain major version number as same as the tailwind major version.
 
 ### With `npm`
 
@@ -122,14 +124,14 @@ your selected accent color(s).
 Since the configuration file is JavaScript, you can filter out some of the theme colors.
 
 ```js
-glow: theme => ({
+glow: (theme) => ({
   colors: {
     blue: theme("colors.blue"),
-    pink: theme("colors.pink.100")
+    pink: theme("colors.pink.100"),
   },
   styles: {
     // ...
-  }
+  },
 });
 ```
 
