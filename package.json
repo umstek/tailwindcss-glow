@@ -1,6 +1,6 @@
 {
   "name": "tailwindcss-glow",
-  "version": "0.3.10",
+  "version": "2.0.0-alpha.1",
   "description": "TailwindCSS glow plugin",
   "keywords": [
     "tailwindcss-plugin",
