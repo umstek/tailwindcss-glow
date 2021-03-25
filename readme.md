@@ -1,6 +1,7 @@
 # Colored/Dynamic Shadow/Glow Plugin for TailwindCSS
 
-_NOTE_: This plugin is for Tailwind 2.x and unstable; 1.x plugin is in the master branch.
+_NOTE_: This plugin is for Tailwind 2.x and unstable; 1.x plugin is at v0.3.10.
+https://github.com/umstek/tailwindcss-glow/releases/tag/v0.3.10
 
 The default shadow plugin for TailwindCSS doesn't support colored shadows, which is a trend now.
 This can be customized, of course, but it is still overwhelming to get colored shadows for, e.g.: 10 colors.  
@@ -8,6 +9,8 @@ WARNING: **This generates a lot of styles, so it is recommended that you choose 
 and/or enable purging.**
 
 ## Installation
+
+CAREFUL: We DON'T use semantic versioning. 0.x versions are for tailwindcss 1.x and the new versions will maintain major version number as same as the tailwind major version.
 
 ### With `npm`
 
