@@ -22,6 +22,9 @@ function App() {
       <div className="my-16 glow-dynamic-md bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
         <p>glow-dynamic-md with gradient</p>
       </div>
+      <div className="my-16 glow-dynamic-lg h-96 w-64 bkg-img">
+        <p>using glow-dynamic-lg with background image</p>
+      </div>
     </div>
   );
 }
