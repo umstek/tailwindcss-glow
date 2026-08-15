@@ -1,2 +1,4 @@
+packages:
+  - example
 allowBuilds:
   '@parcel/watcher': false

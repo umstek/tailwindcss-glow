@@ -15,6 +15,19 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3
 
+  example:
+    dependencies:
+      tailwindcss:
+        specifier: ^4.3.3
+        version: 4.3.3
+      tailwindcss-glow:
+        specifier: link:..
+        version: link:..
+    devDependencies:
+      '@tailwindcss/cli':
+        specifier: ^4.3.3
+        version: 4.3.3
+
 packages:
 
   '@jridgewell/gen-mapping@0.3.13':
