@@ -35,6 +35,7 @@
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "ci-gpr": "node scripts/prepare-gpr.js",
+    "lint": "oxlint",
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
   "peerDependencies": {
@@ -42,6 +43,7 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "oxlint": "1.78.0",
     "tailwindcss": "^4.3.3"
   }
 }
