@@ -17,15 +17,31 @@
   "license": "MIT",
   "author": "Wickramaranga Abeygunawardhana <w@umstek.tk>",
   "main": "index.js",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "index.js",
+    "index.mjs"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "ci-gpr": "node scripts/prepare-gpr.js",
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
-  "dependencies": {
-    "color-convert": "^2.0.1",
-    "color-string": "^1.6.0",
-    "lodash": "^4.17.21",
-    "tailwindcss": "^2.2.17"
+  "peerDependencies": {
+    "tailwindcss": "^4.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.3.3",
+    "tailwindcss": "^4.3.3"
   }
 }
