@@ -62,12 +62,16 @@ This plugin generates the following utilities:
 ```css
 .glow-blue-100 {
   /* For each color (blue-100 here), for the `default` style */
-  box-shadow: 0 1px 3px 0 rgba(235, 248, 255, 0.4), 0 1px 2px 0 rgba(235, 248, 255, 0.24);
+  box-shadow:
+    0 1px 3px 0 rgba(235, 248, 255, 0.4),
+    0 1px 2px 0 rgba(235, 248, 255, 0.24);
 }
 
 .glow-blue-100-md {
   /* For each color (blue-100 here), for each sizes (styles) from `md`, `lg`, `xl` and `2xl`. */
-  box-shadow: 0 4px 6px -1px rgba(235, 248, 255, 0.4), 0 2px 4px -1px rgba(235, 248, 255, 0.24);
+  box-shadow:
+    0 4px 6px -1px rgba(235, 248, 255, 0.4),
+    0 2px 4px -1px rgba(235, 248, 255, 0.24);
 }
 
 /* ... */

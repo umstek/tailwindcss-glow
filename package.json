@@ -36,6 +36,8 @@
   "scripts": {
     "ci-gpr": "node scripts/prepare-gpr.js",
     "lint": "oxlint",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
   "peerDependencies": {
@@ -43,6 +45,7 @@
   },
   "devDependencies": {
     "@tailwindcss/cli": "^4.3.3",
+    "oxfmt": "0.63.0",
     "oxlint": "1.78.0",
     "tailwindcss": "^4.3.3"
   }

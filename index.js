@@ -59,14 +59,10 @@ function tint(color, alpha) {
  * @type {Record<string, string | ((color: string) => string)>}
  */
 const defaultStyles = {
-  default: (color) =>
-    `0 1px 3px 0 ${tint(color, 40)}, 0 1px 2px 0 ${tint(color, 24)}`,
-  md: (color) =>
-    `0 4px 6px -1px ${tint(color, 40)}, 0 2px 4px -1px ${tint(color, 24)}`,
-  lg: (color) =>
-    `0 10px 15px -3px ${tint(color, 40)}, 0 4px 6px -2px ${tint(color, 20)}`,
-  xl: (color) =>
-    `0 20px 25px -5px ${tint(color, 40)}, 0 10px 10px -5px ${tint(color, 16)}`,
+  default: (color) => `0 1px 3px 0 ${tint(color, 40)}, 0 1px 2px 0 ${tint(color, 24)}`,
+  md: (color) => `0 4px 6px -1px ${tint(color, 40)}, 0 2px 4px -1px ${tint(color, 24)}`,
+  lg: (color) => `0 10px 15px -3px ${tint(color, 40)}, 0 4px 6px -2px ${tint(color, 20)}`,
+  xl: (color) => `0 20px 25px -5px ${tint(color, 40)}, 0 10px 10px -5px ${tint(color, 16)}`,
   "2xl": (color) => `0 25px 50px -12px ${color}`,
   outline: (color) => `0 0 0 3px ${tint(color, 50)}`,
   none: "none",
@@ -198,10 +194,7 @@ function buildStaticGlowUtilities(styles) {
   for (const [modifier, style] of Object.entries(styles)) {
     if (typeof style === "function") continue;
 
-    const className =
-      modifier === "default"
-        ? "glow"
-        : utilityClassName("glow", modifier);
+    const className = modifier === "default" ? "glow" : utilityClassName("glow", modifier);
 
     utilities[`.${className}`] = { "box-shadow": style };
   }
