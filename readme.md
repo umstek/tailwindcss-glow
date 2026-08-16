@@ -11,6 +11,17 @@ generates colored glow (`box-shadow`) utilities for your whole color palette, pl
 
 ## Installation
 
+> [!NOTE]
+> The v4 rewrite is **not published to npm yet**. Until `4.0.0-beta.1` is released,
+> `npm i tailwindcss-glow` still installs the old v2-era `2.0.0-beta.1`. Install the
+> v4 plugin from source:
+>
+> ```bash
+> npm i github:umstek/tailwindcss-glow
+> ```
+>
+> Once published, use `npm i tailwindcss-glow@beta`.
+
 ```bash
 npm i tailwindcss-glow
 # or
