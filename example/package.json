@@ -1,46 +1,17 @@
 {
-  "name": "example",
-  "version": "2.0.0-beta.1",
+  "name": "tailwindcss-glow-example",
   "private": true,
-  "dependencies": {
-    "@craco/craco": "^6.1.1",
-    "@testing-library/jest-dom": "5.15.0",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "13.5.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "2.1.2"
-  },
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "eject": "react-scripts eject"
+    "dev": "tailwindcss -i input.css -o out.css --watch",
+    "build": "tailwindcss -i input.css -o out.css --minify"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "dependencies": {
+    "tailwindcss": "^4.3.3",
+    "tailwindcss-glow": "link:.."
   },
   "devDependencies": {
-    "@tailwindcss/postcss7-compat": "npm:@tailwindcss/postcss7-compat",
-    "autoprefixer": "^9",
-    "postcss": "^7",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat",
-    "tailwindcss-glow": "file:.."
+    "@tailwindcss/cli": "^4.3.3"
   }
 }

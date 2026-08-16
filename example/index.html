@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tailwindcss-glow example</title>
+    <link rel="stylesheet" href="out.css" />
+  </head>
+  <body>
+    <h1>Colored shadows</h1>
+    <div class="my-8 flex flex-wrap gap-4">
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500">glow-blue-500</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500-md">glow-blue-500-md</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500-lg">glow-blue-500-lg</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500-xl">glow-blue-500-xl</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500-2xl">glow-blue-500-2xl</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-blue-500-outline">glow-blue-500-outline</div>
+      <div class="m-2 rounded bg-blue-100 p-4 glow-none">glow-none</div>
+    </div>
+
+    <h1>Dynamic glow (follows the element background)</h1>
+    <div class="my-8 flex flex-wrap gap-4">
+      <div class="m-2 rounded bg-red-500 p-4 text-white hover:bg-green-500 glow-dynamic">
+        glow-dynamic
+      </div>
+      <div class="m-2 rounded bg-red-500 p-4 text-white hover:bg-green-500 glow-dynamic-md">
+        glow-dynamic-md
+      </div>
+      <div class="m-2 rounded bg-red-500 p-4 text-white hover:bg-green-500 glow-dynamic-lg">
+        glow-dynamic-lg
+      </div>
+    </div>
+
+    <div class="my-16 glow-dynamic-md bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
+      <p>glow-dynamic-md with a gradient</p>
+    </div>
+  </body>
+</html>

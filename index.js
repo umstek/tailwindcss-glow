@@ -1,23 +1,70 @@
-const _ = require("lodash");
-const colorString = require("color-string");
-const convert = require("color-convert");
+"use strict";
 
-const prefixNegativeModifiers = require("tailwindcss/lib/util/prefixNegativeModifiers")
-  .default;
-const flattenColorPalette = require("tailwindcss/lib/util/flattenColorPalette")
-  .default;
+const plugin = require("tailwindcss/plugin");
+const flattenColorPalette = require("tailwindcss/lib/util/flattenColorPalette");
 
+/**
+ * Characters that must be escaped in a CSS class selector. Mirrors what the
+ * built-in Tailwind v2 escaper (`e()`) did, since the v4 plugin API no longer
+ * exposes one.
+ */
+const CSS_CLASS_ESCAPES = /[\\/.()[\]{}#%!?*+,<>=@;~&$'^"|:]/g;
+
+/**
+ * Escape a utility name fragment for safe use inside a CSS class selector.
+ *
+ * @param {string} name
+ * @returns {string}
+ */
+function escapeClassName(name) {
+  return name.replace(CSS_CLASS_ESCAPES, "\\$&");
+}
+
+/**
+ * Build a class name from a prefix and a (possibly negative) modifier,
+ * preserving the naming scheme of the original v2 plugin.
+ *
+ * @param {string} prefix
+ * @param {string} modifier
+ * @returns {string}
+ */
+function utilityClassName(prefix, modifier) {
+  const negative = modifier.startsWith("-");
+  const name = negative ? `${prefix}-${modifier.slice(1)}` : `${prefix}-${modifier}`;
+  return escapeClassName(name);
+}
+
+/**
+ * Wrap a color and an alpha percentage into a CSS `color-mix()` call.
+ *
+ * This is the modern replacement for the v2-era `rgba(${baseColor}, a)`
+ * interpolation: `color-mix(in srgb, C 40%, transparent)` is exactly `C` at
+ * 40% alpha (premultiplied alpha in sRGB) and, unlike the old approach, it
+ * works with any CSS color syntax (`oklch()`, `hsl()`, CSS variables,
+ * `currentColor`, …) without build-time color parsing.
+ *
+ * @param {string} color
+ * @param {number} alpha - Between 0 and 100.
+ * @returns {string}
+ */
+function tint(color, alpha) {
+  return `color-mix(in srgb, ${color} ${alpha}%, transparent)`;
+}
+
+/**
+ * Default glow styles. Each function receives the (raw CSS) color value and
+ * returns a `box-shadow` value. The offsets mirror Tailwind's default shadow
+ * scale; the alphas mirror the original plugin's bumped-up alphas.
+ *
+ * @type {Record<string, string | ((color: string) => string)>}
+ */
 const defaultStyles = {
-  default: (baseColor) =>
-    `0 1px 3px 0 rgba(${baseColor}, 0.4), 0 1px 2px 0 rgba(${baseColor}, 0.24)`,
-  md: (baseColor) =>
-    `0 4px 6px -1px rgba(${baseColor}, 0.4), 0 2px 4px -1px rgba(${baseColor}, 0.24)`,
-  lg: (baseColor) =>
-    `0 10px 15px -3px rgba(${baseColor}, 0.4), 0 4px 6px -2px rgba(${baseColor}, 0.20)`,
-  xl: (baseColor) =>
-    `0 20px 25px -5px rgba(${baseColor}, 0.4), 0 10px 10px -5px rgba(${baseColor}, 0.16)`,
-  "2xl": (baseColor) => `0 25px 50px -12px rgba(${baseColor}, 1)`,
-  outline: (baseColor) => `0 0 0 3px rgba(${baseColor}, 0.5)`,
+  default: (color) => `0 1px 3px 0 ${tint(color, 40)}, 0 1px 2px 0 ${tint(color, 24)}`,
+  md: (color) => `0 4px 6px -1px ${tint(color, 40)}, 0 2px 4px -1px ${tint(color, 24)}`,
+  lg: (color) => `0 10px 15px -3px ${tint(color, 40)}, 0 4px 6px -2px ${tint(color, 20)}`,
+  xl: (color) => `0 20px 25px -5px ${tint(color, 40)}, 0 10px 10px -5px ${tint(color, 16)}`,
+  "2xl": (color) => `0 25px 50px -12px ${color}`,
+  outline: (color) => `0 0 0 3px ${tint(color, 50)}`,
   none: "none",
 };
 
@@ -97,73 +144,89 @@ const dynamicGlow2Xl = {
   },
 };
 
-module.exports = function () {
-  return function ({ addUtilities, e, theme, variants }) {
-    const colors = flattenColorPalette(theme("glow.colors") || theme("colors"));
-    const styles = theme("glow.styles") || defaultStyles;
-    const styleFunctions = _.filter(
-      _.toPairs(styles),
-      ([_modifier, style]) => typeof style === "function"
-    );
-    const staticStyles = _.filter(
-      _.toPairs(styles),
-      ([_modifier, style]) => typeof style !== "function"
-    );
+const dynamicGlowUtilities = {
+  ".glow-dynamic": dynamicGlow,
+  ".glow-dynamic-md": dynamicGlowMd,
+  ".glow-dynamic-lg": dynamicGlowLg,
+  ".glow-dynamic-xl": dynamicGlowXl,
+  ".glow-dynamic-2xl": dynamicGlow2Xl,
+};
 
-    const processedGlows = _.flatMap(colors, (colorValue, colorModifier) => {
-      if (colorValue === "currentColor") {
-        return null;
-      }
+/**
+ * Build the color-driven glow utilities (`.glow-{color}` and
+ * `.glow-{color}-{style}`).
+ *
+ * @param {Record<string, string>} colors - Flattened color palette.
+ * @param {Record<string, string | ((color: string) => string)>} styles
+ * @returns {Record<string, { "box-shadow": string }>}
+ */
+function buildColorGlowUtilities(colors, styles) {
+  const utilities = {};
 
-      const colorDescriptor = colorString.get(colorValue);
-      const colorRGB = (colorDescriptor.model === "rgb"
-        ? colorDescriptor.value
-        : convert[colorDescriptor.model].rgb(colorDescriptor.value)
-      ).slice(0, 3);
-      const baseColor = colorRGB.join(", ");
+  for (const [colorName, colorValue] of Object.entries(colors)) {
+    if (typeof colorValue !== "string") continue;
 
-      return _.map(styleFunctions, ([modifier, style]) => {
-        const className = `${e(
-          prefixNegativeModifiers(
-            "glow",
-            modifier === "default"
-              ? colorModifier // default style will have only a color suffix
-              : `${colorModifier}-${modifier}`
-          )
-        )}`;
+    for (const [modifier, style] of Object.entries(styles)) {
+      if (typeof style !== "function") continue;
 
-        return [
-          `.${className}`,
-          {
-            "box-shadow": style(baseColor),
-          },
-        ];
-      });
-    }).filter((c) => !!c);
-
-    const staticGlows = _.map(staticStyles, ([modifier, style]) => {
       const className =
         modifier === "default"
-          ? "glow"
-          : `${e(prefixNegativeModifiers("glow", modifier))}`;
+          ? escapeClassName(`glow-${colorName}`)
+          : utilityClassName("glow", `${colorName}-${modifier}`);
 
-      return [
-        `.${className}`,
-        {
-          "box-shadow": style,
-        },
-      ];
-    });
+      utilities[`.${className}`] = { "box-shadow": style(colorValue) };
+    }
+  }
 
-    const utilities = _.fromPairs([...processedGlows, ...staticGlows]);
+  return utilities;
+}
 
-    addUtilities(utilities, variants("shadow"));
-    addUtilities([
-      { ".glow-dynamic": dynamicGlow },
-      { ".glow-dynamic-md": dynamicGlowMd },
-      { ".glow-dynamic-lg": dynamicGlowLg },
-      { ".glow-dynamic-xl": dynamicGlowXl },
-      { ".glow-dynamic-2xl": dynamicGlow2Xl },
-    ]);
+/**
+ * Build the static glow utilities (`.glow` and `.glow-{style}`) for styles
+ * that are plain strings rather than color-dependent functions.
+ *
+ * @param {Record<string, string | ((color: string) => string)>} styles
+ * @returns {Record<string, { "box-shadow": string }>}
+ */
+function buildStaticGlowUtilities(styles) {
+  const utilities = {};
+
+  for (const [modifier, style] of Object.entries(styles)) {
+    if (typeof style === "function") continue;
+
+    const className = modifier === "default" ? "glow" : utilityClassName("glow", modifier);
+
+    utilities[`.${className}`] = { "box-shadow": style };
+  }
+
+  return utilities;
+}
+
+/**
+ * The tailwindcss-glow plugin.
+ *
+ * Options (via `@plugin "tailwindcss-glow" { … }` for flat values, or via a
+ * legacy `@config` JS file for full JS options):
+ *
+ * - `colors`: color palette to generate glow utilities for. Defaults to all
+ *   theme colors (`theme("colors")`), or `theme("glow.colors")` when set.
+ * - `styles`: glow style map. Function values receive the color value;
+ *   string values are used verbatim. Defaults to `theme("glow.styles")` or
+ *   the built-in `default`/`md`/`lg`/`xl`/`2xl`/`outline`/`none` styles.
+ *
+ * @type {import("tailwindcss/plugin").PluginWithOptions<
+ *   { colors?: Record<string, string>, styles?: Record<string, string | ((color: string) => string)> }
+ * >}
+ */
+module.exports = plugin.withOptions((options = {}) => {
+  return ({ addUtilities, theme }) => {
+    const colors = flattenColorPalette(
+      options.colors ?? theme("glow.colors") ?? theme("colors") ?? {},
+    );
+    const styles = options.styles ?? theme("glow.styles") ?? defaultStyles;
+
+    addUtilities(buildColorGlowUtilities(colors, styles));
+    addUtilities(buildStaticGlowUtilities(styles));
+    addUtilities(dynamicGlowUtilities);
   };
-};
+});

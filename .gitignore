@@ -193,3 +193,6 @@ modules.xml
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/node,webstorm+all,visualstudiocode
+# Local scratch space for ad-hoc build experiments
+/scratch/
+/example/out.css
