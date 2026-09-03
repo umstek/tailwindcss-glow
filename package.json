@@ -22,7 +22,7 @@
     "test": "echo \"Error: No tests rn :(. \" && exit 1"
   },
   "dependencies": {
-    "color-convert": "^2.0.1",
+    "color-convert": "^3.0.0",
     "color-string": "^1.6.0",
     "lodash": "^4.17.21",
     "tailwindcss": "^2.2.17"
