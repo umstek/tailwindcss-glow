@@ -1,0 +1,14 @@
+{
+  "printWidth": 100,
+  "semi": true,
+  "singleQuote": false,
+  "trailingComma": "all",
+  "sortPackageJson": false,
+  "ignorePatterns": [
+    "node_modules/**",
+    "scratch/**",
+    "example/out.css",
+    "example/index.html",
+    "pnpm-lock.yaml"
+  ]
+}

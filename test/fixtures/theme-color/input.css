@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "tailwindcss-glow";
+
+@theme {
+  --color-accent: #6d28d9;
+}

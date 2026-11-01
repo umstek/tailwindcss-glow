@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@plugin "tailwindcss-glow";
+
+body {
+  margin: 2rem;
+  font-family: system-ui, sans-serif;
+}
