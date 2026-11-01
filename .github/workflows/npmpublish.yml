@@ -35,7 +35,15 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org/
       - run: pnpm install --frozen-lockfile
-      - run: pnpm publish --no-git-checks
+      - name: Pick npm dist-tag
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if [[ "$VERSION" == *-* ]]; then
+            echo "NPM_TAG=beta" >> "$GITHUB_ENV"
+          else
+            echo "NPM_TAG=latest" >> "$GITHUB_ENV"
+          fi
+      - run: pnpm publish --no-git-checks --tag "$NPM_TAG"
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
