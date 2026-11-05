@@ -3,6 +3,7 @@ name: Node.js Package
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -25,6 +26,9 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -44,12 +48,13 @@ jobs:
             echo "NPM_TAG=latest" >> "$GITHUB_ENV"
           fi
       - run: pnpm publish --no-git-checks --tag "$NPM_TAG"
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
 
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -64,4 +69,4 @@ jobs:
       - run: pnpm run ci-gpr
       - run: pnpm publish --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{secrets.gpr_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
