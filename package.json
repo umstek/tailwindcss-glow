@@ -32,7 +32,7 @@
   "engines": {
     "node": ">=20"
   },
-  "packageManager": "pnpm@11.18.0",
+  "packageManager": "pnpm@11.28.11",
   "scripts": {
     "ci-gpr": "node scripts/prepare-gpr.js",
     "lint": "oxlint",
